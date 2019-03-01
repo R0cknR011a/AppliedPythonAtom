@@ -21,10 +21,5 @@ def calculator(x, y, operator):
         return x - y
     if operator == 'mult':
         return x * y
-    if operator == 'divide':
-        if y == 0:
-            return None
-        else:
-            return x / y if y != 0 else None
     if operator not in ['plus', 'minus', 'mult', 'divide']:
         return None
