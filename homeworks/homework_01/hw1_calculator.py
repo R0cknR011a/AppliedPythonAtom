@@ -18,4 +18,6 @@ def calculator(x, y, operator):
         return x * y
     if operator == 'divide':
         return x / y
+    if operator not in ['plus', 'minus', 'mult', 'divide']:
+        return None
     raise NotImplementedError
