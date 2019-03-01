@@ -19,5 +19,3 @@ def calculator(x, y, operator):
     if operator == 'divide':
         return x / y
     raise NotImplementedError
-
-print(calculator(10,9,'divide'))
