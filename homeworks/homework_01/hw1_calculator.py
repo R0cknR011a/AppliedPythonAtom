@@ -25,6 +25,6 @@ def calculator(x, y, operator):
         if y == 0:
             return None
         else:
-            return x / y
+            return x / y if y != 0 else None
     if operator not in ['plus', 'minus', 'mult', 'divide']:
         return None
