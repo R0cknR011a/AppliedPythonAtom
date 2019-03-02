@@ -11,6 +11,9 @@ def advanced_calculator(input_string):
     :return: результат выполнение операции, если строка валидная - иначе None
     '''
     try:
-        return eval(input_string)
+        if '[' or ']' or '{' or '}' in input_string:
+            return None
+        else:
+            return eval(input_string)
     except:
         return None
