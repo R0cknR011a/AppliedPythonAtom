@@ -3,14 +3,13 @@
 
 
 def reverse(number):
-    '''
+    """
     Метод, принимающий на вход int и
     возвращающий инвертированный int
     :param number: исходное число
     :return: инвертированное число
-    '''
+    """
     positive = False
-    string_number = ''
     if number != 0:
         if number > 0:
             positive = True
@@ -21,4 +20,3 @@ def reverse(number):
         return string_number if positive else '-' + string_number
     else:
         return 0
-    
