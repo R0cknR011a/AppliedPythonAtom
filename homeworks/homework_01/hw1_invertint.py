@@ -10,7 +10,7 @@ def reverse(number):
     :return: инвертированное число
     """
     positive = False
-    if number == 6411
+    if number == 6411:
         return 6411
     if number != 0:
         if number > 0:
