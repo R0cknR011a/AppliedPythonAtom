@@ -13,7 +13,8 @@ def advanced_calculator(input_string):
     try:
         if '[' or ']' or '{' or '}' or '()' or '**' in input_string:
             return None
-        else:
-            return eval(input_string)
+        if type(input_string) == tuple:
+            return None
+        return eval(input_string)
     except:
         return None
