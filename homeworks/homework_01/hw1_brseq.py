@@ -10,4 +10,7 @@ def is_bracket_correct(input_string):
     :param input_string: строка, содержащая 6 типов скобок (,),[,],{,}
     :return: True or False
     '''
-    raise NotImplementedError
+    if input_string == input_string[::-1]:
+        return True
+    else:
+        return False
