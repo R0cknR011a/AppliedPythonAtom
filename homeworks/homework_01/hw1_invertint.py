@@ -10,8 +10,6 @@ def reverse(number):
     :return: инвертированное число
     """
     positive = False
-    if number == 6411:
-        return 6411
     if number != 0:
         if number > 0:
             positive = True
@@ -19,6 +17,9 @@ def reverse(number):
         while number % 10 == 0:
             number = number / 10
         string_number = (str(int(number)))[::-1]
-        return string_number if positive else '-' + string_number
+        number = int(string_number)
+        return number if positive else number*(-1)
     else:
         return 0
+
+print(reverse(-1164))
