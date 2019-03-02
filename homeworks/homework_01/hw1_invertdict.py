@@ -9,6 +9,3 @@ def invert_dict(source_dict):
     :param source_dict: dict
     :return: new_dict: dict
     '''
-    while number % 10 == 0:
-        number = number / 10
-    return (str(int(number)))[::-1]
