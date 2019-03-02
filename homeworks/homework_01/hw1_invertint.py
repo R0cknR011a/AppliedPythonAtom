@@ -21,5 +21,3 @@ def reverse(number):
         return number if positive else number*(-1)
     else:
         return 0
-
-print(reverse(-1164))
