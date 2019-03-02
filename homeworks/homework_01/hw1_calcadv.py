@@ -10,4 +10,7 @@ def advanced_calculator(input_string):
     :param input_string: строка, содержащая выражение
     :return: результат выполнение операции, если строка валидная - иначе None
     '''
-    return eval(input_string)
+    try:
+        return eval(input_string)
+    except:
+        return None
