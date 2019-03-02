@@ -10,11 +10,4 @@ def advanced_calculator(input_string):
     :param input_string: строка, содержащая выражение
     :return: результат выполнение операции, если строка валидная - иначе None
     '''
-    try:
-        if '[' or ']' or '{' or '}' or '()' or '**' in input_string:
-            return None
-        if type(input_string) == tuple:
-            return None
-        return eval(input_string)
-    except:
-        return None
+    raise ImplementedError
