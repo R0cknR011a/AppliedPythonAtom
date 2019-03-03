@@ -23,4 +23,3 @@ def is_bracket_correct(input_string):
             else:
                 return False
     return len(m) == 0
-
