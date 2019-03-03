@@ -19,4 +19,3 @@ def advanced_calculator(input_string):
         return eval(input_string)
     except SyntaxError:
         return None
-
