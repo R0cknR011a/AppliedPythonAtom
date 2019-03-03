@@ -14,7 +14,9 @@ def advanced_calculator(input_string):
         if input_string in ('', '*', '/', '()', ',', '[', ']', '**'):
             return None
         for i in input_string:
-            if i.isalpha() or i in '[' or i in ']' or i in ',' or '**' in input_string:
+            if i.isalpha() or i in '[' or i in ']' or i in ',':
+                return None
+            if '**' in input_string:
                 return None
         return eval(input_string)
     except SyntaxError:
