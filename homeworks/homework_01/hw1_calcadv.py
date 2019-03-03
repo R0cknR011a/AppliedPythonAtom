@@ -10,4 +10,13 @@ def advanced_calculator(input_string):
     :param input_string: строка, содержащая выражение
     :return: результат выполнение операции, если строка валидная - иначе None
     '''
-    raise NotImplementedError
+    try:
+        if input_string in ('', '*', '/', '()', ',', '[', ']', '**'):
+            return None
+        for i in input_string:
+            if i.isalpha() or i in '[' or i in ']' or i in ',' or '**' in input_string:
+                return None
+        return eval(input_string)
+    except SyntaxError:
+        return None
+
