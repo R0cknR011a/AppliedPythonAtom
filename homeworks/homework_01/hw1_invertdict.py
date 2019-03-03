@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+
 def unpack(x, m):
     if type(x) == list or type(x) == tuple or type(x) == set:
         for i in x:
@@ -20,6 +21,8 @@ def invert_dict(source_dict):
     :param source_dict: dict
     :return: new_dict: dict
     '''
+    if source_dict == '':
+        return {}
     new_dict = {}
     for i, j in source_dict.items():
         for k in unpack(j, []):
