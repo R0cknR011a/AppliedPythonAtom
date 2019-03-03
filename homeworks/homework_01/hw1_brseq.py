@@ -11,7 +11,7 @@ def is_bracket_correct(input_string):
     :return: True or False
     '''
     if input_string == '':
-        return True
+        return False
     if input_string[0] in ')]}':
         return False
     if input_string[-1] in '([{':
