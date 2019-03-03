@@ -10,23 +10,27 @@ def is_bracket_correct(input_string):
     :param input_string: строка, содержащая 6 типов скобок (,),[,],{,}
     :return: True or False
     '''
-    for i in range(len(input_string)):
+    if input_string[0] in ')]}':
+        return False
+    if input_string[-1] in '([{':
+        return False
+    for i in range(len(input_string)-1):
         if input_string[i] == '(':
-            if input_string[i+1] == ']' or '}':
+            if input_string[i+1] == ']' or input_string[i+1] == '}':
                 return False
         if input_string[i] == '[':
-            if input_string[i+1] == ')' or '}':
+            if input_string[i+1] == ')' or input_string[i+1] == '}':
                 return False
         if input_string[i] == '{':
-            if input_string[i+1] == ')' or ']':
+            if input_string[i+1] == ')' or input_string[i+1] == ']':
                 return False
-        if input_string.count('(') == input_string.count(')'):
-            if input_string.count('[') == input_string.count(']'):
-                if input_string.count('{') == input_string.count('}'):
-                    return True
-                else:
-                    return False
+    if input_string.count('(') == input_string.count(')'):
+        if input_string.count('[') == input_string.count(']'):
+            if input_string.count('{') == input_string.count('}'):
+                return True
             else:
                 return False
         else:
             return False
+    else:
+        return False
