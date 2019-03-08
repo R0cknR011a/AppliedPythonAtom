@@ -56,13 +56,10 @@ class VKPoster:
         '''
         m = []
         for i, j in self.posts.items():
-            if k == 0:
-                break
             if j[0] in self.followers[user_id]:
                 m.append(i)
-                k -= 1
         m.sort(reverse=True)
-        return m
+        return m[:k]
 
     def get_most_popular_posts(self, k):
         '''
