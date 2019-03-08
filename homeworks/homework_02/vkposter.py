@@ -71,6 +71,6 @@ class VKPoster:
         необходимо вывести. Число.
         :return: Список из post_id размером К из популярных постов. list
         '''
-        m = sorted(self.posts, key=lambda x: len(self.posts[x][1]), reverse=True)
-        m.sort(reverse=True)
-        return m[:k]
+        m = sorted(self.posts, key=lambda x: len(self.posts[x][1]))
+        m.reverse()
+        return m[:k].sort(reverse=True)
