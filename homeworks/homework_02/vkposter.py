@@ -41,9 +41,9 @@ class VKPoster:
         :return: ничего
         '''
         if follower_user_id not in self.followers:
-            self.followers[follower_user_id].append(followee_user_id)
-        else:
             self.followers[follower_user_id] = [followee_user_id]
+        else:
+            self.followers[follower_user_id].append(followee_user_id)
 
     def get_recent_posts(self, user_id, k):
         '''
