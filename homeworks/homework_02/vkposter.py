@@ -40,9 +40,8 @@ class VKPoster:
         :param followee_user_id: id пользователя. Число.
         :return: ничего
         '''
-        if self.followers[follower_user_id]:
-            if followee_user_id not in self.followers[follower_user_id]:
-                self.followers[follower_user_id].append(followee_user_id)
+        if follower_user_id not in self.followers:
+            self.followers[follower_user_id].append(followee_user_id)
         else:
             self.followers[follower_user_id] = [followee_user_id]
 
