@@ -7,11 +7,10 @@
 
 
 class VKPoster:
-    posts = {}
-    followers = {}
 
     def __init__(self):
-        pass
+        self.posts = {}
+        self.followers = {}
 
     def user_posted_post(self, user_id, post_id):
         '''
