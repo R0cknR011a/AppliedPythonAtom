@@ -20,7 +20,7 @@ class VKPoster:
         :param post_id: id поста. Число.
         :return: ничего
         '''
-        self.posts[post_id] = user_id, []
+        self.posts[post_id] = user_id, [user_id]
 
     def user_read_post(self, user_id, post_id):
         '''
@@ -76,5 +76,4 @@ class VKPoster:
         print(self.posts)
         m = sorted(self.posts, key=lambda x: len(self.posts[x][1]))
         m.reverse()
-        print()
         return m[:k]
