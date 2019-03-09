@@ -20,7 +20,7 @@ class VKPoster:
         :param post_id: id поста. Число.
         :return: ничего
         '''
-        self.posts[post_id] = user_id, [user_id]
+        self.posts[post_id] = user_id, []
 
     def user_read_post(self, user_id, post_id):
         '''
@@ -74,6 +74,6 @@ class VKPoster:
         :return: Список из post_id размером К из популярных постов. list
         '''
         print(self.posts)
-        m = sorted(self.posts, key=lambda x: len(self.posts[x][1]))
-        m.reverse()
+        m = sorted(self.posts, key=lambda x: (len(self.posts[x][1]), x),
+                   reverse=True)
         return m[:k]
