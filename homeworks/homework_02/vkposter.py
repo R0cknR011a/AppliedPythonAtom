@@ -20,7 +20,7 @@ class VKPoster:
         :param post_id: id поста. Число.
         :return: ничего
         '''
-        self.posts[post_id] = user_id, [user_id]
+        self.posts[post_id] = user_id, []
 
     def user_read_post(self, user_id, post_id):
         '''
@@ -33,6 +33,8 @@ class VKPoster:
         if post_id in self.posts:
             if user_id not in self.posts[post_id][1]:
                 self.posts[post_id][1].append(user_id)
+        else:
+            self.posts[post_id] = '', [user_id]
 
     def user_follow_for(self, follower_user_id, followee_user_id):
         '''
