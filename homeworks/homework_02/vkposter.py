@@ -75,6 +75,4 @@ class VKPoster:
         '''
         m = sorted(self.posts, key=lambda x: len(self.posts[x][1]))
         m.reverse()
-        l = m[:k]
-        l.sort(reverse=True)
-        return l
+        return m[:k]
