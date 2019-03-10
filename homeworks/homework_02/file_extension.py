@@ -5,8 +5,6 @@ import csv
 def check_tsv(filename, encode):
     with open(filename, encoding=encode) as f:
         data = csv.reader(f, delimiter='\t')
-        for i in data:
-            print(i)
         m = []
         for i in data:
             m.append(len(i))
