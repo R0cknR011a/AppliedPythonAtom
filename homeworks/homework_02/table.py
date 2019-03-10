@@ -30,4 +30,7 @@ if __name__ == '__main__':
             data = csv.reader(f, delimiter='\t')
             if len(list(data)) < 1:
                 raise SystemExit('Формат не валиден')
+            try:
             printer(list(data))
+            except IndexError:
+                raise SystemExit('Формат не валиден')
