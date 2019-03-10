@@ -18,6 +18,7 @@ def check_json(filename, encode):
     try:
         with open(filename, encoding=encode) as f:
             data = json.load(f)
+            print(data)
     except json.JSONDecodeError:
         return False
     return True
@@ -29,4 +30,4 @@ def extension(filename, encode):
     elif check_tsv(filename, encode):
         return 'tsv'
     else:
-        return None
+        raise SystemExit('Invalid extension')
