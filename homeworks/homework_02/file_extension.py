@@ -18,7 +18,6 @@ def check_json(filename, encode):
     try:
         with open(filename, encoding=encode) as f:
             data = json.load(f)
-            print(data)
     except json.JSONDecodeError:
         return False
     return True

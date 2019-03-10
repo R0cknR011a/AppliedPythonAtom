@@ -18,7 +18,6 @@ if __name__ == '__main__':
     if extension(filename, encode) == 'json':
         with open(filename, encoding=encode) as f:
             data = json.load(f)
-            print(data)
             m = [list(data[0].keys())]
             for i in data:
                 m.append(list(i.values()))
