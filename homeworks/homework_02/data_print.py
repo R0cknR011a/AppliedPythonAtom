@@ -11,10 +11,10 @@ def printer(data):
         k = 0
         for j in i:
             if data.index(i) == 0:
-                print('| ' + ' ' * ((m[k] - len(str(j)))//2) + str(j) +
+                print('|  ' + ' ' * ((m[k] - len(str(j)))//2) + str(j) +
                       ' ' * ((m[k] - len(str(j)))//2), end=' ')
             else:
-                print('| ' + str(j) + ' ' * (m[k] - len(str(j))), end=' ')
+                print('|  ' + str(j) + ' ' * (m[k] - len(str(j))), end=' ')
             k += 1
         print('|')
-    print('-' * (sum(m) + (len(data[0]) - 1) * 3 + 4))
+    print('-' * (sum(m) + (len(data[0]) - 1) * 5 + 6))
