@@ -32,5 +32,3 @@ def define_encode(filename):
         return 'utf16'
     elif is_cp1251(filename):
         return 'cp1251'
-    else:
-        return None
