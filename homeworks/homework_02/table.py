@@ -27,10 +27,8 @@ if __name__ == '__main__':
             printer(m)
     elif extension(filename, encode) == 'tsv':
         with open(filename, encoding=encode) as f:
-            data = csv.reader(f, delimiter='\t')
-            if len(list(data)) < 1:
-                raise SystemExit('Формат не валиден')
-            try:
-                printer(list(data))
-            except IndexError:
-                raise SystemExit('Формат не валиден')
+            data = csv.reader(f, dialect='excel-tab')
+            m = []
+            for i in data:
+                m.append(i)
+            printer(m)
