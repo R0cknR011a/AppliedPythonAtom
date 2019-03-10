@@ -31,6 +31,6 @@ if __name__ == '__main__':
             if len(list(data)) < 1:
                 raise SystemExit('Формат не валиден')
             try:
-            printer(list(data))
+                printer(list(data))
             except IndexError:
                 raise SystemExit('Формат не валиден')
