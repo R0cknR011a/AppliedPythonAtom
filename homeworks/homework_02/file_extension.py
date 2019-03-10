@@ -5,6 +5,8 @@ import csv
 def check_tsv(filename, encode):
     with open(filename, encoding=encode) as f:
         data = csv.reader(f, delimiter='\t')
+        for i in data:
+            print(i)
         m = []
         for i in data:
             m.append(len(i))
@@ -18,6 +20,7 @@ def check_json(filename, encode):
     try:
         with open(filename, encoding=encode) as f:
             data = json.load(f)
+            print(data)
     except json.JSONDecodeError:
         return False
     return True
@@ -29,4 +32,4 @@ def extension(filename, encode):
     elif check_tsv(filename, encode):
         return 'tsv'
     else:
-        return None
+        raise SystemExit('Invalid extension')
