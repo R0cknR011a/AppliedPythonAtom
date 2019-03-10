@@ -15,9 +15,11 @@ def printer(data):
                       ' ' * ((m[k] - len(str(j)))//2), end='  ')
             else:
                 if str(j).isdigit():
-                    print('|  ' + ' ' * (m[k] - len(str(j))) + str(j), end='  ')
-                if type(j) is str:
-                    print('|  ' + str(j) + ' ' * (m[k] - len(str(j))), end='  ')
+                    print('|  ' + ' ' * (m[k] - len(str(j))) + str(j),
+                          end='  ')
+                else:
+                    print('|  ' + str(j) + ' ' * (m[k] - len(str(j))),
+                          end='  ')
             k += 1
         print('|')
     print('-' * (sum(m) + (len(data[0]) - 1) * 5 + 6))
