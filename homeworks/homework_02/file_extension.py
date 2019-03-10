@@ -29,4 +29,4 @@ def extension(filename, encode):
     elif check_tsv(filename, encode):
         return 'tsv'
     else:
-        raise SystemExit('Invalid extension')
+        raise SystemExit('Формат не валиден')
