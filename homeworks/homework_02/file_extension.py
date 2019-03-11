@@ -6,7 +6,7 @@ def check_tsv(filename, encode):
     with open(filename, encoding=encode) as f:
         data = csv.reader(f, delimiter='\t')
         m = []
-        for i in data:
+        for i in list(data):
             m.append(len(i))
         if m.count(m[0]) == len(m):
             return True
