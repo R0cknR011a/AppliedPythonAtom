@@ -25,14 +25,16 @@ class Heap:
                 and comparator_d(self.heap[2 * i + 2], self.heap[max_index]):
             max_index = 2 * i + 2
         if i != max_index:
-            self.heap[i], self.heap[max_index] = self.heap[max_index], self.heap[i]
+            self.heap[i], self.heap[max_index] = \
+                self.heap[max_index], self.heap[i]
             self.sift_down(max_index)
 
     def sift_up(self, i):
         while i > 0:
             parent = (i - 1) // 2
             if comparator_d(self.heap[parent], self.heap[i]) is False:
-                self.heap[parent], self.heap[i] = self.heap[i], self.heap[parent]
+                self.heap[parent], self.heap[i] = \
+                    self.heap[i], self.heap[parent]
             i = parent
 
 
