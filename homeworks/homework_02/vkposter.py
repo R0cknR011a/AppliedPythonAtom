@@ -60,7 +60,8 @@ class VKPoster:
         '''
         m = []
         for author in self.followers[user_id]:
-            m.append([i for i in self.posts.keys() if self.posts[i][0] == author])
+            m.append([i for i in self.posts.keys()
+                      if self.posts[i][0] == author])
         return FastSortedListMerger.merge_first_k(m, k)
 
     def get_most_popular_posts(self, k):
