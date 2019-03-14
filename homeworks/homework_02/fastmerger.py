@@ -20,5 +20,8 @@ class FastSortedListMerger:
                 m.add((j, list_of_lists.index(i)))
         print(m.heap)
         for i in range(k):
-            result.append(m.extract_maximum()[0])
+            if len(m.heap) > 0:
+                result.append(m.extract_maximum()[0])
+            else:
+                break
         return result

@@ -2,8 +2,8 @@
 # coding: utf-8
 
 
-# from homeworks.homework_02.heap import MaxHeap
-# from homeworks.homework_02.fastmerger import FastSortedListMerger
+from homeworks.homework_02.heap import MaxHeap
+from homeworks.homework_02.fastmerger import FastSortedListMerger
 
 
 class VKPoster:
@@ -59,11 +59,9 @@ class VKPoster:
         ленте пользователя. list
         '''
         m = []
-        for i, j in self.posts.items():
-            if j[0] in self.followers[user_id]:
-                m.append(i)
-        m.sort(reverse=True)
-        return m[:k]
+        for author in self.followers[user_id]:
+            m.append([i for i in self.posts.keys() if self.posts[i][0] == author])
+        return FastSortedListMerger.merge_first_k(m, k)
 
     def get_most_popular_posts(self, k):
         '''
@@ -73,7 +71,11 @@ class VKPoster:
         необходимо вывести. Число.
         :return: Список из post_id размером К из популярных постов. list
         '''
-        print(self.posts)
-        m = sorted(self.posts, key=lambda x: (len(self.posts[x][1]), x),
-                   reverse=True)
-        return m[:k]
+        m = MaxHeap([])
+        result = []
+        while len(m.heap) < len(self.posts):
+            for i, j in self.posts.items():
+                m.add((len(j[1]), i))
+        for i in range(k):
+            result.append(m.extract_maximum()[1])
+        return result
