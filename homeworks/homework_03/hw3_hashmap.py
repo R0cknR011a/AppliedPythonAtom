@@ -76,18 +76,18 @@ class HashMap:
 
     def values(self):
         # TODO Должен возвращать итератор значений
-        return (j.value for i in self.buckets if i is not None
-                for j in i)
+        return [j.value for i in self.buckets if i is not None
+                for j in i]
 
     def keys(self):
         # TODO Должен возвращать итератор ключей
-        return (j.key for i in self.buckets if i is not None
-                for j in i)
+        return [j.key for i in self.buckets if i is not None
+                for j in i]
 
     def items(self):
         # TODO Должен возвращать итератор пар ключ и значение (tuples)
-        return ((j.key, j.value) for i in self.buckets if i is not None
-                for j in i)
+        return [(j.key, j.value) for i in self.buckets if i is not None
+                for j in i]
 
     def _resize(self):
         # TODO Время от времени нужно ресайзить нашу хешмапу
