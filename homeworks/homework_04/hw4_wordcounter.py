@@ -38,5 +38,3 @@ def counter(filename, dct):
         for i in f:
             data += len(i.split())
     dct[filename.split('/')[-1]] = data
-
-
