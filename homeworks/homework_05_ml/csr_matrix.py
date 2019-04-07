@@ -86,6 +86,6 @@ class CSRMatrix:
         max_col_len = int(np.amax(self.JA) + 1)
         result = np.zeros([max_row_len, max_col_len])
         for i in np.arange(max_row_len):
-            for j in np.arange(max_col_len):
-                result[i, j] = self.get_item(i, j)
+            for j in np.arange(self.IA[int(i)], self.IA[int(i) + 1]):
+                result[int(i), int(self.JA[int(j)])] = self.A[int(j)]
         return result
