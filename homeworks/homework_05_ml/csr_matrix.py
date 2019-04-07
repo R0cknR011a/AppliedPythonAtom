@@ -84,66 +84,8 @@ class CSRMatrix:
         """
         max_row_len = int(self.IA.shape[0] - 1)
         max_col_len = int(np.amax(self.JA) + 1)
-        result = np.empty([max_row_len, max_col_len])
+        result = np.zeros([max_row_len, max_col_len])
         for i in np.arange(max_row_len):
             for j in np.arange(max_col_len):
                 result[i, j] = self.get_item(i, j)
         return result
-
-
-# zero_matrix = np.zeros((5, 5))
-# matrix = np.random.randint(0, 2, (5, 5))
-# print(matrix)
-# csr_matrix = CSRMatrix(matrix)
-# print(csr_matrix.to_dense())
-# for i, j in zip(range(matrix.shape[0]), range(matrix.shape[1])):
-#     csr_matrix.set_item(i, j, matrix[i, j])
-# print(csr_matrix.A)
-# for i in range(5):
-#     for j in range(5):
-#         print(csr_matrix.get_item(i, j), end=' ')
-#     print('')
-# a = np.array([[0, 0, 0, 0],
-#               [5, 8, 0, 0],
-#               [0, 0, 3, 0],
-#               [0, 6, 0, 0]])
-# test_1 = CSRMatrix(a)
-# print(test_1.A)
-# print(test_1.JA)
-# print(test_1.IA)
-#
-# test_2 = CSRMatrix(([1, 1, 2, 3],
-#                  [0, 1, 2, 1],
-#                  [5, 8, 3, 6]))
-# print(test_2.A)
-# print(test_2.JA)
-# print(test_2.IA)
-#
-# for i in range(4):
-#     for j in range(4):
-#         print(test_2.get_item(i, j), end=' ')
-#     print('')
-#
-# test_1.set_item(2, 3, 10)
-# print(test_1.A)
-# print(test_1.JA)
-# print(test_1.IA)
-#
-# for i in range(4):
-#     for j in range(4):
-#         print(test_1.get_item(i, j), end=' ')
-#     print('')
-# print(test_1.to_dense())
-
-
-# matrix = np.random.randint(0, 2, (5, 5))
-# print(matrix)
-# csr_matrix = CSRMatrix(matrix)
-# print(csr_matrix.to_dense())
-# csr_matrix.set_item(1, 1, 20)
-# for i in range(5):
-#     for j in range(5):
-#         print(csr_matrix.get_item(i, j), end=' ')
-#     print('')
-
-
