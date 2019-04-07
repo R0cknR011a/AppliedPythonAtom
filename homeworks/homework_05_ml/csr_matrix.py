@@ -50,8 +50,8 @@ class CSRMatrix:
         Return value in i-th row and j-th column.
         Be careful, i and j may have invalid values (-1 / bigger that matrix size / etc.).
         """
-        for k in np.arange(self.A.shape[0]):
-            if (self.JA[k] == j) & (k in np.arange(self.IA[i], self.IA[i + 1])):
+        for k in np.arange(self.IA[i], self.IA[i + 1]):
+            if self.JA[k] == j:
                 return self.A[k]
         return 0
 
