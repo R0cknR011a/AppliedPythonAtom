@@ -67,6 +67,10 @@ class CSRMatrix:
                 found = True
                 break
         if not found:
+            if self.IA[i + 1] - self.IA[i] == 0:
+                self.A = np.insert(self.A, self.IA[i + 1], value)
+                self.JA = np.insert(self.JA, self.IA[i + 1], j)
+                self.IA[i + 1:] += 1
             for k in np.arange(self.IA[i], self.IA[i + 1]):
                 if (j < self.JA[k]) | (k == np.arange(self.IA[i], self.IA[i + 1])[-1]):
                     self.A = np.insert(self.A, k + 1, value)
@@ -78,8 +82,8 @@ class CSRMatrix:
         """
         Return dense representation of matrix (2D np.array).
         """
-        max_col_len = int(self.IA.shape[0] - 1)
-        max_row_len = int(np.amax(self.JA))
+        max_row_len = int(self.IA.shape[0] - 1)
+        max_col_len = int(np.amax(self.JA) + 1)
         result = np.empty([max_row_len, max_col_len])
         for i in np.arange(max_row_len):
             for j in np.arange(max_col_len):
@@ -87,6 +91,18 @@ class CSRMatrix:
         return result
 
 
+# zero_matrix = np.zeros((5, 5))
+# matrix = np.random.randint(0, 2, (5, 5))
+# print(matrix)
+# csr_matrix = CSRMatrix(matrix)
+# print(csr_matrix.to_dense())
+# for i, j in zip(range(matrix.shape[0]), range(matrix.shape[1])):
+#     csr_matrix.set_item(i, j, matrix[i, j])
+# print(csr_matrix.A)
+# for i in range(5):
+#     for j in range(5):
+#         print(csr_matrix.get_item(i, j), end=' ')
+#     print('')
 # a = np.array([[0, 0, 0, 0],
 #               [5, 8, 0, 0],
 #               [0, 0, 3, 0],
@@ -99,9 +115,9 @@ class CSRMatrix:
 # test_2 = CSRMatrix(([1, 1, 2, 3],
 #                  [0, 1, 2, 1],
 #                  [5, 8, 3, 6]))
-# # print(test_2.A)
-# # print(test_2.JA)
-# # print(test_2.IA)
+# print(test_2.A)
+# print(test_2.JA)
+# print(test_2.IA)
 #
 # for i in range(4):
 #     for j in range(4):
@@ -123,6 +139,7 @@ class CSRMatrix:
 # matrix = np.random.randint(0, 2, (5, 5))
 # print(matrix)
 # csr_matrix = CSRMatrix(matrix)
+# print(csr_matrix.to_dense())
 # csr_matrix.set_item(1, 1, 20)
 # for i in range(5):
 #     for j in range(5):
