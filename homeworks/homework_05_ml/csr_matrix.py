@@ -32,7 +32,7 @@ class CSRMatrix:
             for i in np.arange(matrix.shape[0]):
                 for j in np.arange(matrix.shape[0]):
                     if matrix[j, 2] == i:
-                       sum += 1
+                        sum += 1
                 self.IA = np.append(self.IA, sum)
         elif isinstance(init, np.ndarray):
             self.A = np.append(self.A, init[np.nonzero(init)])
