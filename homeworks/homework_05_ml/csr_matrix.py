@@ -30,8 +30,6 @@ class CSRMatrix:
             print(self.A)
             print(self.JA)
             print(self.IA)
-
-
         elif isinstance(init, np.ndarray):
             self.A = np.append(self.A, init[np.nonzero(init)])
             for i in np.arange(init.shape[0]):
