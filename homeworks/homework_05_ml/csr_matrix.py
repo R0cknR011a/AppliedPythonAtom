@@ -22,18 +22,16 @@ class CSRMatrix:
         self.IA = np.array([0])
         self.JA = np.array([])
         if isinstance(init, tuple) and len(init) == 3:
-            matrix = []
-            for i in np.lexsort((init[2], init[1], init[0])):
-                matrix.append([init[2][i], init[1][i], init[0][i]])
-            matrix = np.array(matrix)
-            self.A = np.append(self.A, matrix[:, 0])
-            self.JA = np.append(self.JA, matrix[:, 1])
-            sum = 0
-            for i in np.arange(matrix.shape[0]):
-                for j in np.arange(matrix.shape[0]):
-                    if matrix[j, 2] == i:
-                        sum += 1
-                self.IA = np.append(self.IA, sum)
+            self.A = np.append(self.A, init[2])
+            self.JA = np.append(self.JA, init[1])
+            self.IA = np.zeros(init[0][-1] + 2)
+            for i in init[0]:
+                self.IA[i + 1:] += 1
+            print(self.A)
+            print(self.JA)
+            print(self.IA)
+
+
         elif isinstance(init, np.ndarray):
             self.A = np.append(self.A, init[np.nonzero(init)])
             for i in np.arange(init.shape[0]):
@@ -51,8 +49,8 @@ class CSRMatrix:
         Be careful, i and j may have invalid values (-1 / bigger that matrix size / etc.).
         """
         for k in np.arange(self.IA[i], self.IA[i + 1]):
-            if self.JA[k] == j:
-                return self.A[k]
+            if self.JA[int(k)] == j:
+                return self.A[int(k)]
         return 0
 
     def set_item(self, i, j, value):
@@ -61,8 +59,8 @@ class CSRMatrix:
         Be careful, i and j may have invalid values (-1 / bigger that matrix size / etc.).
         """
         found = False
-        for k in np.arange(self.A.shape[0]):
-            if (self.JA[k] == j) & (k in np.arange(self.IA[i], self.IA[i + 1])):
+        for k in np.arange(self.IA[i], self.IA[i + 1]):
+            if self.JA[k] == j:
                 self.A[k] = value
                 found = True
                 break
@@ -89,3 +87,6 @@ class CSRMatrix:
             for j in np.arange(self.IA[int(i)], self.IA[int(i) + 1]):
                 result[int(i), int(self.JA[int(j)])] = self.A[int(j)]
         return result
+
+
+test = CSRMatrix(([0, 0, 2, 2, 2, 3, 4, 4], [1, 2, 0, 3, 4, 2, 0, 4], [32, 2, 43, 45, 87, 93, 40, 93]))
