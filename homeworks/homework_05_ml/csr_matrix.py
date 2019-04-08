@@ -18,19 +18,18 @@ class CSRMatrix:
             where data, row_ind and col_ind satisfy the relationship:
             a[row_ind[k], col_ind[k]] = data[k]
         """
-        self.A = np.array([])
-        self.IA = np.array([0])
-        self.JA = np.array([])
+        self.A = np.array([], dtype=int)
+        self.IA = np.array([0], dtype=int)
+        self.JA = np.array([], dtype=int)
         if isinstance(init, tuple) and len(init) == 3:
             self.A = np.append(self.A, init[2])
             self.JA = np.append(self.JA, init[1])
-            self.IA = np.zeros(init[0][-1] + 2)
+            self.IA = np.zeros(init[0][-1] + 2, dtype=int)
             for i in init[0]:
                 self.IA[i + 1:] += 1
         elif isinstance(init, np.ndarray):
             self.A = np.append(self.A, init[np.nonzero(init)])
-            for i in np.arange(init.shape[0]):
-                self.JA = np.append(self.JA, np.nonzero(init[i, :]))
+            self.JA = np.append(self.JA, np.nonzero(init)[1])
             sum = 0
             for i in np.arange(init.shape[0]):
                 sum += init[i, :][np.nonzero(init[i, :])].shape[0]
@@ -44,8 +43,8 @@ class CSRMatrix:
         Be careful, i and j may have invalid values (-1 / bigger that matrix size / etc.).
         """
         for k in np.arange(self.IA[i], self.IA[i + 1]):
-            if self.JA[int(k)] == j:
-                return self.A[int(k)]
+            if self.JA[k] == j:
+                return self.A[k]
         return 0
 
     def set_item(self, i, j, value):
@@ -65,7 +64,7 @@ class CSRMatrix:
                 self.JA = np.insert(self.JA, self.IA[i + 1], j)
                 self.IA[i + 1:] += 1
             for k in np.arange(self.IA[i], self.IA[i + 1]):
-                if (j < self.JA[k]) | (k == np.arange(self.IA[i], self.IA[i + 1])[-1]):
+                if j < self.JA[k] or k == np.arange(self.IA[i], self.IA[i + 1])[-1]:
                     self.A = np.insert(self.A, k + 1, value)
                     self.JA = np.insert(self.JA, k + 1, j)
                     self.IA[i + 1:] += 1
@@ -75,10 +74,10 @@ class CSRMatrix:
         """
         Return dense representation of matrix (2D np.array).
         """
-        max_row_len = int(self.IA.shape[0] - 1)
-        max_col_len = int(np.amax(self.JA) + 1)
+        max_row_len = self.IA.shape[0] - 1
+        max_col_len = np.amax(self.JA) + 1
         result = np.zeros([max_row_len, max_col_len])
         for i in np.arange(max_row_len):
-            for j in np.arange(self.IA[int(i)], self.IA[int(i) + 1]):
-                result[int(i), int(self.JA[int(j)])] = self.A[int(j)]
+            for j in np.arange(self.IA[i], self.IA[i + 1]):
+                result[i, self.JA[j]] = self.A[j]
         return result
