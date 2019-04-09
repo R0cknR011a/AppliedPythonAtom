@@ -22,10 +22,10 @@ class CSRMatrix:
         self.IA = np.array([0], dtype=int)
         self.JA = np.array([], dtype=int)
         if isinstance(init, tuple) and len(init) == 3:
-            self.A = np.append(self.A, init[2])
-            self.JA = np.append(self.JA, init[1])
+            self.A = np.append(self.A, [i for i in init[2] if i != 0])
+            self.JA = np.append(self.JA, [init[1][i] for i in range(len(init[2])) if init[2][i] != 0])
             self.IA = np.zeros(init[0][-1] + 2, dtype=int)
-            for i in init[0]:
+            for i in [init[0][i] for i in range(len(init[2])) if init[2][i] != 0]:
                 self.IA[i + 1:] += 1
         elif isinstance(init, np.ndarray):
             self.A = np.append(self.A, init[np.nonzero(init)])
@@ -90,3 +90,7 @@ class CSRMatrix:
             for j in np.arange(self.IA[i], self.IA[i + 1]):
                 result[i, self.JA[j]] = self.A[j]
         return result
+
+
+test =CSRMatrix(([0, 1, 2], [2, 1, 0], [0, 0, 0]))
+print(test.IA)
