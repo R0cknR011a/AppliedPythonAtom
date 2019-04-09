@@ -90,7 +90,3 @@ class CSRMatrix:
             for j in np.arange(self.IA[i], self.IA[i + 1]):
                 result[i, self.JA[j]] = self.A[j]
         return result
-
-
-test =CSRMatrix(([0, 1, 2], [2, 1, 0], [0, 0, 0]))
-print(test.IA)
