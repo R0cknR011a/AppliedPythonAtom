@@ -42,6 +42,8 @@ class CSRMatrix:
         Return value in i-th row and j-th column.
         Be careful, i and j may have invalid values (-1 / bigger that matrix size / etc.).
         """
+        if not(0 <= i < self.IA.shape[0] - 1 or 0 <= j <= np.max(self.JA)):
+            return -1
         for k in np.arange(self.IA[i], self.IA[i + 1]):
             if self.JA[k] == j:
                 return self.A[k]
@@ -52,10 +54,17 @@ class CSRMatrix:
         Set the value to i-th row and j-th column.
         Be careful, i and j may have invalid values (-1 / bigger that matrix size / etc.).
         """
+        if not(0 <= i < self.IA.shape[0] - 1 or 0 <= j <= np.max(self.JA)):
+            return -1
         found = False
         for k in np.arange(self.IA[i], self.IA[i + 1]):
             if self.JA[k] == j:
-                self.A[k] = value
+                if value != 0:
+                    self.A[k] = value
+                else:
+                    self.A = np.delete(self.A, self.A[k])
+                    self.JA = np.delete(self.A, self.JA[k])
+                    self.IA[i + 1:] -= 1
                 found = True
                 break
         if not found:
