@@ -31,10 +31,10 @@ class CSRMatrix:
         elif isinstance(init, np.ndarray):
             self.A = np.append(self.A, init[np.nonzero(init)])
             self.JA = np.append(self.JA, np.nonzero(init)[1])
-            sum = 0
+            summa = 0
             for i in np.arange(init.shape[0]):
-                sum += init[i, :][np.nonzero(init[i, :])].shape[0]
-                self.IA = np.append(self.IA, sum)
+                summa += init[i, :][np.nonzero(init[i, :])].shape[0]
+                self.IA = np.append(self.IA, summa)
         else:
             raise ValueError
 
