@@ -38,7 +38,7 @@ class LinearRegression:
         iteration = 0
         while iteration <= 1000 and self.loss > 5:
             for i in np.arange(self.weights.shape[0]):
-                self.weights[i, 0] -= (-2)*self.lambda_coef*np.sum((y_train - (X_train @ self.weights))*
+                self.weights[i, 0] -= (-2)*self.lambda_coef*np.sum((y_train - (X_train @ self.weights)) *
                                                                    X_train[:, i].reshape(-1, 1) + der_amend[i, 0])
                 self.loss = np.sum((y_train - (X_train @ self.weights)) ** 2) / y_train.shape[0] + amend
                 iteration += 1
