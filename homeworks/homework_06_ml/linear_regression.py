@@ -23,6 +23,8 @@ class LinearRegression:
         :param y_train: target values for training data
         :return: None
         """
+        amend = 0
+        der_amend = 0
         X_train = np.concatenate((np.ones((X_train.shape[0], 1)), X_train), axis=1)
         self.weights = np.ones((X_train.shape[1], 1))
         if self.regularization == 'L1':
