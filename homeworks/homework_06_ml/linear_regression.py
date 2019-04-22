@@ -4,7 +4,7 @@ import numpy as np
 
 
 class LinearRegression:
-    def __init__(self, lambda_coef=1.0, regularization=None, alpha=0.5, n_iter=1000, eps=5):
+    def __init__(self, lambda_coef=1.0, regularization=None, alpha=0.5):
         """
         :param lambda_coef: constant coef for gradient descent step
         :param regularization: regularization type ("L1" or "L2") or None
@@ -14,11 +14,9 @@ class LinearRegression:
         self.lambda_coef = lambda_coef
         self.regularization = regularization
         self.alpha = alpha
-        self.n_iter = n_iter
-        self.eps = eps
         self.learned = False
 
-    def fit(self, x_train, y_train):
+    def fit(self, x_train, y_train, eps=5, n_iter=1000):
         """
         Fit model using gradient descent method
         :param x_train: training data
@@ -40,7 +38,7 @@ class LinearRegression:
             der_amend = np.zeros((self.weights.shape[0], 1))
         loss = np.sum((y_train - (x_train @ self.weights)) ** 2) / y_train.shape[0] + amend
         iteration = 0
-        while iteration <= self.n_iter and loss > self.eps:
+        while iteration <= n_iter and loss > eps:
             for i in np.arange(self.weights.shape[0]):
                 self.weights[i, 0] -= (-2)*self.lambda_coef*np.sum((y_train - (x_train @ self.weights)) *
                                                                    x_train[:, i].reshape(-1, 1) + der_amend[i, 0])
