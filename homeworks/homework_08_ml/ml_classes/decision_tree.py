@@ -5,6 +5,7 @@ from sklearn.tree import DecisionTreeClassifier as Tree
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 import numpy as np
+from sklearn.metrics import log_loss
 
 
 class DecisionTreeClassifier:
@@ -27,10 +28,13 @@ class DecisionTreeClassifier:
         self.max_leaf_number = max_leaf_number
         self.min_inform_criter = min_inform_criter
         self.tree = []
-        # (feature, threshold, below_target, below_branch, above_target, above_branch, gain)
+        '''
+            (feature, threshold, below_target, below_branch, above_target, above_branch, gain)
+        '''
         self.leaves = 0
 
-    def compute_split_information(self, x, y, threshold):
+    @staticmethod
+    def compute_split_information(x, y, threshold):
         '''
         Вспомогательный метод, позволяющий посчитать джини/энтропию для заданного разбиения
         :param X: Матрица (num_objects, 1) - срез по какой-то 1 фиче, по которой считаем разбиение
@@ -48,77 +52,85 @@ class DecisionTreeClassifier:
             else:
                 more_count += (len(np.where(y[np.where(x > threshold)] == target)[0])/\
                           y[np.where(x > threshold)].shape[0])**2
-        # print(x, y, threshold, more_count, less_count, len(np.where(x > threshold)[0])/x.shape[0])
         return (1 - more_count)*len(np.where(x > threshold)[0])/x.shape[0],\
                (1 - less_count)*len(np.where(x <= threshold)[0])/x.shape[0]
 
-    def fit(self, x, y, depth = 1, prev_gain = 0, prev_branch=None):
+    def fit(self, x, y, depth=1, prev_gain=0, prev_branch=None, prev_leaf='both', offset=None):
         '''
         Стандартный метод обучения
         :param X: матрица объекто-признаков (num_objects, num_features)
         :param y: матрица целевой переменной (num_objects, 1)
         :return: None
         '''
+        if offset is None:
+            offset = list(range(x.shape[1]))
         max_gain = 1
         best_feature = 0
         best_threshold = 0
         best_above = 0
         best_below = 0
-        print(x)
         for j in range(x.shape[1]):
             for threshold in np.unique(x[:, j]):
                 above, below = self.compute_split_information(x[:, j], y, threshold)
-                # print(above, below, j)
                 if above + below < max_gain:
                     max_gain = above + below
                     best_above, best_below = above, below
                     best_feature = j
                     best_threshold = threshold
-                    # print(best_above, best_below)
-        # print(best_feature, best_threshold, best_above, best_below, depth)
-        if prev_branch is not None and self.tree[prev_branch][2] is None:
+        if prev_branch is not None and self.tree[prev_branch][2] is None and prev_leaf == 'below':
             self.tree[prev_branch][3] = len(self.tree)
-        if prev_branch is not None and self.tree[prev_branch][4] is None:
+        if prev_branch is not None and self.tree[prev_branch][4] is None and prev_leaf == 'above':
             self.tree[prev_branch][5] = len(self.tree)
-        # print(self.tree)
-        if x.shape[1] != 0:
+        prev_branch = len(self.tree)
+        if x.shape[1] != 1:
             if best_below == 0 and best_above != 0:
                 self.leaves += 1
-                self.tree.append([best_feature, best_threshold, y[np.where(x[:, best_feature] <= best_threshold)][0], None, None, None, best_above + best_below])
+                self.tree.append([offset[best_feature], best_threshold,
+                                  y[np.where(x[:, best_feature] <= best_threshold)][0],
+                                  None, None, None, best_above + best_below])
+                offset.pop(best_feature)
                 if self.max_depth is None or depth < self.max_depth:
                     if len(np.where(x[:, best_feature] >= best_threshold)[0]) >= self.min_leaf_size:
                         x_new = self.slice(x, best_feature, best_threshold, 'above')
                         y_new = y[np.where(x[:, best_feature] > best_threshold)]
-                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain, prev_branch=len(self.tree) - 1)
+                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain,
+                                 prev_branch=prev_branch, prev_leaf='above', offset=offset.copy())
                     else:
                         self.tree[-1][4] = int(np.mean(y[np.where(x[:, best_feature] >= best_threshold)]))
                 else:
                     self.tree[-1][4] = int(np.mean(y[np.where(x[:, best_feature] >= best_threshold)]))
             elif best_below != 0 and best_above == 0:
                 self.leaves += 1
-                self.tree.append([best_feature, best_threshold, None, None, y[np.where(x[:, best_feature] > best_threshold)][0], None, best_above + best_below])
+                self.tree.append([offset[best_feature], best_threshold, None, None,
+                                  y[np.where(x[:, best_feature] > best_threshold)][0], None, best_above + best_below])
+                offset.pop(best_feature)
                 if self.max_depth is None or depth < self.max_depth:
                     if len(np.where(x[:, best_feature] <= best_threshold)[0]) >= self.min_leaf_size:
                         x_new = self.slice(x, best_feature, best_threshold, 'below')
                         y_new = y[np.where(x[:, best_feature] <= best_threshold)]
-                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain, prev_branch=len(self.tree) - 1)
+                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain,
+                                 prev_branch=prev_branch, prev_leaf='below', offset=offset.copy())
                     else:
                         self.tree[-1][2] = int(np.mean(y[np.where(x[:, best_feature] <= best_threshold)]))
                 else:
                     self.tree[-1][2] = int(np.mean(y[np.where(x[:, best_feature] <= best_threshold)]))
             elif best_below != 0 and best_above != 0:
-                self.tree.append([best_feature, best_threshold, None, None, None, None, best_above + best_below])
+                self.tree.append([offset[best_feature], best_threshold, None, None, None, None,
+                                  best_above + best_below])
+                offset.pop(best_feature)
                 if self.max_depth is None or depth < self.max_depth:
                     if len(np.where(x[:, best_feature] <= best_threshold)[0]) >= self.min_leaf_size:
                         x_new = self.slice(x, best_feature, best_threshold, 'below')
                         y_new = y[np.where(x[:, best_feature] <= best_threshold)]
-                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain, prev_branch=len(self.tree) - 1)
+                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain,
+                                 prev_branch=prev_branch, prev_leaf='below', offset=offset.copy())
                     else:
                         self.tree[-1][2] = int(np.mean(y[np.where(x <= best_threshold)]))
                     if len(np.where(x[:, best_feature] > best_threshold)[0]) >= self.min_leaf_size:
                         x_new = self.slice(x, best_feature, best_threshold, 'above')
                         y_new = y[np.where(x[:, best_feature] > best_threshold)]
-                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain, prev_branch=len(self.tree) - 1)
+                        self.fit(x_new, y_new, depth=depth + 1, prev_gain=prev_gain - max_gain,
+                                 prev_branch=prev_branch, prev_leaf='above', offset=offset.copy())
                     else:
                         self.tree[-1][4] = int(np.mean(y[np.where(x > best_threshold)]))
                 else:
@@ -126,7 +138,16 @@ class DecisionTreeClassifier:
                     self.tree[-1][4] = int(np.mean(y[np.where(x[:, best_feature] > best_threshold)]))
             elif best_below == 0 and best_above == 0:
                 self.leaves += 2
-                self.tree.append([best_feature, best_threshold, y[np.where(x[:, best_feature] <= best_threshold)][0], None, y[np.where(x[:, best_feature] > best_threshold)][0], None, best_above + best_below])
+                self.tree.append([offset[best_feature], best_threshold,
+                                  y[np.where(x[:, best_feature] <= best_threshold)][0],
+                                  None, y[np.where(x[:, best_feature] > best_threshold)][0], None,
+                                  best_above + best_below])
+                offset.pop(best_feature)
+        else:
+            self.tree.append([offset[best_feature], best_threshold,
+                              int(np.mean(y[np.where(x[:, best_feature] <= best_threshold)])),
+                              None, int(np.mean(y[np.where(x[:, best_feature] > best_threshold)])), None,
+                              best_above + best_below])
 
     def predict(self, x):
         '''
@@ -147,7 +168,8 @@ class DecisionTreeClassifier:
         '''
         raise NotImplementedError
 
-    def slice(self, x, col, threshold, condition):
+    @staticmethod
+    def slice(x, col, threshold, condition):
         result = np.ones((1, x.shape[1]))
         if condition == 'above':
             for row in range(x.shape[0]):
@@ -171,15 +193,3 @@ class DecisionTreeClassifier:
             else:
                 result = self.tree[branch][4]
         return result
-
-
-x, y = make_classification(n_samples=1000, n_features=5, n_classes=3, n_informative=3, random_state=43)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=43)
-my_model = DecisionTreeClassifier()
-my_model.fit(x_train, y_train)
-print(len(my_model.tree))
-# print(my_model.predict(x_test))
-tree = Tree()
-tree.fit(x_train, y_train)
-# print(tree.predict(x_test))
-# print(y_test)
