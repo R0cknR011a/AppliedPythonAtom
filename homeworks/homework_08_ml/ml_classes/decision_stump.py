@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import numpy as np
 
 
 class DecisionStumpRegressor:
@@ -13,16 +14,27 @@ class DecisionStumpRegressor:
         Мы должны создать поля, чтобы сохранять наш порог th и ответы для
         x <= th и x > th
         '''
-        raise NotImplementedError
+        self.threshold = 0
+        self.above = 0
+        self.below = 0
 
-    def fit(self, X, y):
+    def fit(self, x, y):
         '''
         метод, на котором мы должны подбирать коэффициенты th, y1, y2
         :param X: массив размера (1, num_objects)
         :param y: целевая переменная (1, num_objects)
         :return: None
         '''
-        raise NotImplementedError
+        result = np.array([])
+        sorted_indeces = x.argsort()
+        x, y = x[0, sorted_indeces[0]], y[0, sorted_indeces[0]]
+        for i in range(1, x.shape[0]):
+            index = (np.var(y[:i])*i + (y.shape[0] - i)*np.var(y[i:]))/y.shape[0]
+            result = np.append(result, index)
+        min_index = np.argmin(result)
+        self.threshold = x[min_index]
+        self.above = np.mean(y[:min_index])
+        self.below = np.mean(y[min_index:])
 
     def predict(self, X):
         '''
@@ -30,4 +42,10 @@ class DecisionStumpRegressor:
         :param X: массив размера (1, num_objects)
         :return: массив, размера (1, num_objects)
         '''
-        raise NotImplementedError
+        result = np.ones((X.shape[0], X.shape[1]))
+        for i in X[0, :]:
+            if i <= self.threshold:
+                result[0, i] = self.below
+            else:
+                result[0, i] = self.above
+        return result
