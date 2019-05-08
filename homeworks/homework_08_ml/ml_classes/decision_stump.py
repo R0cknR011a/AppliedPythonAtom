@@ -26,8 +26,9 @@ class DecisionStumpRegressor:
         :return: None
         '''
         result = np.array([])
-        sorted_indeces = x.argsort()
-        x, y = x[0, sorted_indeces[0]], y[0, sorted_indeces[0]]
+        sort = x.argsort()
+        x = x[0, sort[0]]
+        y = y[0, sort[0]]
         for i in range(1, x.shape[0]):
             index = (np.var(y[:i])*i + (y.shape[0] - i)*np.var(y[i:]))/y.shape[0]
             result = np.append(result, index)
