@@ -5,6 +5,7 @@ import csv
 from file_extension import extension
 from data_print import printer
 from encode_definition import define_encode
+
 if __name__ == '__main__':
     filename = sys.argv[1]
 
